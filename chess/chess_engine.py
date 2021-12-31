@@ -133,9 +133,6 @@ class GameState():
     All moves considering the king is in check
     '''
     def getValidMoves(self):
-        for log in self.castleRightLog:
-                print(log.wks, log.wqs, log.bks, log.bqs, end=", ")
-        print()
         tempEnpassantPossible = self.enpassantPossible
         tempCastleRight = CastleRights(self.currentCastlingRight.wks, self.currentCastlingRight.bks,
                                        self.currentCastlingRight.wqs, self.currentCastlingRight.bqs) #copy the current castling right

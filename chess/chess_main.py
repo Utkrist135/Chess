@@ -69,21 +69,58 @@ def main():
                 if e.key == p.K_s: #undo when 's' is pressed
                     gs.undoMove(move)
                     moveMade = True
+                if e.key == p.K_r: #reset the board if r is pressed
+                    gs = chess_engine.GameState()
+                    validMoves = gs.getValidMoves()
+                    sqSelected = ()
+                    playerClicks = []
+                    moveMade = False
+
+
+
 
         if moveMade:
             validMoves = gs.getValidMoves()
             moveMade = False
 
 
-        drawGameState(screen, gs)
+        drawGameState(screen, gs, validMoves, sqSelected)
         clock.tick(MAX_FPS)
         p.display.flip()
 
 
-def drawGameState(screen, gs):
+
+'''
+Highlights square selected and possible moves
+'''
+def highlightSquare(screen, gs, validmoves, sqSelected):
+    if sqSelected != ():
+        r, c = sqSelected
+        r=int(r)
+        c=int(c)
+        if gs.board[r][c][0] == ('w' if gs.whiteToMove else 'b'): #sqSelected is a piece
+            #Highlight the selected square
+            s = p.Surface((SQ_SIZE, SQ_SIZE))
+            s.set_alpha(100) #Transparency Value
+            s.fill(p.Color('blue'))
+            screen.blit(s, (c*SQ_SIZE, r*SQ_SIZE))
+            #Highlight all possible moves
+            s.fill(p.Color('yellow'))
+            for move in validmoves:
+                if move.startRow == r and move.startCol == c:
+                    screen.blit(s, (move.endCol*SQ_SIZE, move.endRow*SQ_SIZE))
+
+
+
+
+
+
+def drawGameState(screen, gs, validmoves, sqSelected):
     drawBoard(screen) #draw squares in the board
-    #add piece highlighting or move suggestion for later
+    highlightSquare(screen, gs, validmoves, sqSelected)
     drawPieces(screen, gs.board) #Draw pieces on top of the squares
+
+
 
 '''
 Draws Squares on the board
