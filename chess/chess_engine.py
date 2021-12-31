@@ -23,8 +23,8 @@ class GameState():
         self.moveLog = []
         self.whiteKingLocation = (7,4)
         self.blackKingLocation = (0,4)
-        self.checkMate = False
-        self.staleMate = False
+        self.checkmate = False
+        self.stalemate = False
         self.enpassantPossible = () #square where the enpassant capture is possible
         self.currentCastlingRight = CastleRights(True, True, True, True)
         self.castleRightLog = [CastleRights(self.currentCastlingRight.wks,self.currentCastlingRight.bks,
@@ -150,12 +150,12 @@ class GameState():
             self.undoMove(moves)
         if len(moves) == 0:
             if self.inCheck():
-                self.checkMate = True
+                self.checkmate = True
             else:
-                self.staleMate = False
+                self.stalemate = False
         else:
-            self.checkMate = False
-            self.staleMate = False
+            self.checkmate = False
+            self.stalemate = False
         self.enpassantPossible = tempEnpassantPossible
         self.currentCastlingRight = tempCastleRight
         return moves
