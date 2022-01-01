@@ -2,7 +2,7 @@
 This in the main driver file, responsible for handling user input and displaying the current Game state object
 """
 import pygame as p
-from chess import chess_engine
+from chess import chess_engine, ChessAI
 
 WIDTH = HEIGHT = 520
 DIMENSION = 8
@@ -37,15 +37,18 @@ def main():
     sqSelected = () # no square is selected currently, keeps track of the last click of the user(Tuple: x,y)
     playerClicks = [] #keep track of the player clicks (two tuples: [(6,4),(4,4)]
     gameOver = False
+    playerOne = False # If a human is playing white it's true if AI is playing then False
+    playerTwo = False # same as above
 
 
     while running:
+        humanTurn = (gs.whiteToMove and playerOne) or (not gs.whiteToMove and playerTwo)
         for e in p.event.get():
             if e.type == p.QUIT:
                 running = False
             #Mouse Handler
             elif e.type == p.MOUSEBUTTONDOWN:
-                if not gameOver:
+                if not gameOver and humanTurn:
                     location = p.mouse.get_pos() #(x,y) location of the mouse
                     col = location[0]//SQ_SIZE
                     row = location[1]//SQ_SIZE
@@ -80,6 +83,12 @@ def main():
                     moveMade = False
 
 
+
+        #AI move finder logic
+        if not gameOver and not humanTurn:
+            AIMove = ChessAI.findRandomMove(validMoves)
+            gs.makeMove(AIMove)
+            moveMade = True
 
 
         if moveMade:
