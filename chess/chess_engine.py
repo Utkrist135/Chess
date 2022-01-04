@@ -100,6 +100,7 @@ class GameState():
             self.castleRightLog.pop()
             self.currentCastlingRight = self.castleRightLog[-1]
 
+
             #undo the castle move
             if move.isCastleMove:
                 if move.endCol - move.startCol == 2: #kingside castle
@@ -108,6 +109,9 @@ class GameState():
                 else:
                     self.board[move.endRow][move.endCol-2] = self.board[move.endRow][move.endCol+1]
                     self.board[move.endRow][move.endCol+1] = '--'
+
+            self.checkmate = False
+            self.stalemate = False
     #update the castle right given the move
     def updateCastleRights(self, move):
         if move.pieceMoved == 'wK':
@@ -128,6 +132,9 @@ class GameState():
                     self.currentCastlingRight.bqs = False
                 elif move.startCol == 7:
                     self.currentCastlingRight.bks = False
+
+
+
 
     '''
     All moves considering the king is in check

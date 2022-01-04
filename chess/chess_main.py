@@ -75,18 +75,20 @@ def main():
                 if e.key == p.K_s: #undo when 's' is pressed
                     gs.undoMove(move)
                     moveMade = True
+                    gameOver = False
                 if e.key == p.K_r: #reset the board if r is pressed
                     gs = chess_engine.GameState()
                     validMoves = gs.getValidMoves()
                     sqSelected = ()
                     playerClicks = []
                     moveMade = False
+                    gameOver = False
 
 
 
         #AI move finder logic
         if not gameOver and not humanTurn:
-            AIMove = ChessAI.findBestMove(gs, validMoves)
+            AIMove = ChessAI.findBestMoveMinMax(gs, validMoves)
             if AIMove is None:
                 AIMove = ChessAI.findRandomMove(validMoves)
             gs.makeMove(AIMove)
